@@ -1,0 +1,34 @@
+{
+  "name": "ironworks-gym",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "format": "prettier --write \"src/**/*.{js,jsx,css}\"",
+    "shots": "bash scripts/shots.sh",
+    "check": "bash scripts/shots.sh && bash scripts/console-check.sh && bash scripts/spec-check.sh",
+    "console-check": "bash scripts/console-check.sh",
+    "spec-check": "bash scripts/spec-check.sh",
+    "measure": "bash scripts/measure.sh"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.11.9",
+    "lenis": "^1.3.26",
+    "lucide-react": "^0.451.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.2",
+    "autoprefixer": "^10.5.5",
+    "postcss": "^8.5.28",
+    "prettier": "^3.3.3",
+    "tailwindcss": "^3.4.19",
+    "vite": "^5.4.8"
+  }
+}

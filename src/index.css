@@ -1,0 +1,207 @@
+@import './styles/variables.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-h) + 1rem);
+    overflow-x: hidden;
+  }
+
+  /* Lenis drives the scroll itself; native smooth behaviour fights it. */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  body {
+    @apply bg-bg text-text font-body text-base leading-body antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Tailwind preflight already resets margins and makes images block-level. */
+  ::selection {
+    @apply bg-accent text-accent-ink;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-[3px] outline-accent-bright;
+    outline-style: solid;
+  }
+
+  address {
+    font-style: normal;
+  }
+}
+
+@layer components {
+  /* Editorial display type. Anton only, always uppercase. */
+  .display {
+    @apply font-display font-normal uppercase leading-display tracking-display;
+  }
+
+  /* The uppercase tracked micro-label used across every section. */
+  .micro {
+    @apply text-micro font-semibold uppercase text-muted;
+  }
+
+  .lead {
+    @apply text-lead text-text-dim max-w-[46ch];
+  }
+
+  /* --- Buttons: one primitive, three weights ---------------------------- */
+  .btn {
+    @apply relative isolate inline-flex items-center justify-center gap-2.5
+      overflow-hidden whitespace-nowrap rounded-xs border border-transparent
+      px-7 py-[1.0625rem] text-micro font-bold uppercase leading-none
+      transition-[color,border-color,background-color,transform] duration-fast ease-snap
+      hover:-translate-y-px active:translate-y-0 active:scale-[0.985];
+  }
+
+  /* A single background wipe, no bounce. */
+  .btn::before {
+    @apply absolute inset-0 -z-10 origin-left scale-x-0
+      transition-transform duration-base ease-snap;
+    content: '';
+  }
+
+  /* Directional shimmer riding over the wipe. */
+  .btn::after {
+    @apply pointer-events-none absolute inset-y-0 -z-10 w-1/3 -translate-x-full opacity-0
+      transition-[transform,opacity] duration-slow ease-snap;
+    content: '';
+    background: linear-gradient(100deg, transparent, rgb(var(--text) / 0.22), transparent);
+  }
+
+  .btn:hover::after {
+    @apply translate-x-[320%] opacity-100;
+  }
+
+  .btn:hover::before {
+    @apply scale-x-100;
+  }
+
+  .btn-primary {
+    @apply bg-accent text-accent-ink border-accent;
+  }
+
+  .btn-primary::before {
+    @apply bg-accent-bright;
+  }
+
+  .btn-ghost {
+    @apply text-text border-text/20;
+  }
+
+  .btn-ghost::before {
+    @apply bg-text;
+  }
+
+  .btn-ghost:hover {
+    @apply text-bg border-text;
+  }
+
+  .btn-lg {
+    @apply px-9 py-5;
+  }
+
+  .btn:disabled {
+    @apply cursor-not-allowed opacity-50;
+  }
+
+  .btn:disabled::before {
+    @apply hidden;
+  }
+
+  /* --- Underlined arrow link -------------------------------------------- */
+  .link-arrow {
+    @apply inline-flex items-center gap-2 border-b border-text/20 pb-1.5
+      text-micro font-bold uppercase text-text
+      transition-[color,border-color] duration-fast ease-quint;
+  }
+
+  .link-arrow svg {
+    @apply transition-transform duration-base ease-quint;
+  }
+
+  .link-arrow:hover {
+    @apply text-accent-bright border-accent;
+  }
+
+  .link-arrow:hover svg {
+    @apply translate-x-[0.2rem] -translate-y-[0.2rem];
+  }
+
+  /* --- Form control ----------------------------------------------------- */
+  .field-control {
+    @apply w-full rounded-xs border border-text/10 bg-surface px-4 py-[0.9375rem]
+      text-base text-text transition-[border-color,background-color]
+      duration-fast ease-quint placeholder:text-muted hover:border-text/20
+      focus:border-accent focus:bg-surface-2 focus:outline-none focus:ring-1
+      focus:ring-accent;
+  }
+
+  textarea.field-control {
+    @apply min-h-28 resize-y;
+  }
+
+  select.field-control {
+    @apply appearance-none pr-11;
+    background-image:
+      linear-gradient(45deg, transparent 50%, rgb(var(--muted)) 50%),
+      linear-gradient(135deg, rgb(var(--muted)) 50%, transparent 50%);
+    background-position:
+      calc(100% - 1.25rem) 55%,
+      calc(100% - 1rem) 55%;
+    background-size:
+      5px 5px,
+      5px 5px;
+    background-repeat: no-repeat;
+  }
+
+  /* Invalid carries a border, an icon and text - never colour alone. */
+  .field-invalid .field-control {
+    @apply border-danger;
+  }
+
+  /* --- Section shell ---------------------------------------------------- */
+  .section-shell {
+    @apply mx-auto w-full max-w-wide px-gutter;
+  }
+
+  /* Drawer links must clear the 48px touch target minimum. */
+  .drawer-link {
+    @apply flex min-h-12 items-baseline gap-4 border-t border-text/10 py-4
+      font-display text-[clamp(1.75rem,9vw,2.5rem)] uppercase leading-none
+      tracking-display text-text transition-colors duration-fast ease-snap
+      hover:text-accent-bright;
+  }
+
+  .skip-link {
+    @apply absolute left-4 -top-full z-[200] bg-accent px-5 py-3 text-micro
+      font-bold uppercase text-accent-ink focus:top-4;
+  }
+}
+
+@layer utilities {
+  /* Body scroll lock for the open drawer. */
+  .no-scroll {
+    @apply overflow-hidden;
+  }
+
+  /* Image crop-on-hover, used sparingly on interactive cards. */
+  .media-zoom img {
+    @apply transition-transform duration-slow ease-quint;
+  }
+
+  .media-zoom:hover img {
+    @apply scale-[1.04];
+  }
+}
