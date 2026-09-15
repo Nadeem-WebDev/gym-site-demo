@@ -5,7 +5,7 @@ import { gym } from '../../data/gym';
 import { NAV_LINKS } from '../../utils/constants';
 import { useScrolled } from '../../hooks/useScrolled';
 import { useActiveSection } from '../../hooks/useActiveSection';
-import { resumeSmoothScroll, scrollToId } from '../../lib/smoothScroll';
+import { resumeSmoothScroll, scrollToId, scrollToTop } from '../../lib/smoothScroll';
 import { cn } from '../../utils/helpers';
 import Button from '../common/Button';
 import MobileMenu from './MobileMenu';
@@ -48,6 +48,17 @@ export default function Header() {
     [onHome, navigate]
   );
 
+  const goHome = useCallback(
+    (e) => {
+      e.preventDefault();
+      setMenuOpen(false);
+      resumeSmoothScroll();
+      navigate('/', { replace: true });
+      scrollToTop({ immediate: true });
+    },
+    [navigate]
+  );
+
   return (
     <>
       <header
@@ -61,6 +72,7 @@ export default function Header() {
         <div className="mx-auto flex h-header max-w-wide items-center justify-between gap-6 px-gutter">
           <Link
             to="/"
+            onClick={goHome}
             className="flex flex-none items-end gap-[0.3125rem]"
             aria-label={`${gym.name} home`}
           >

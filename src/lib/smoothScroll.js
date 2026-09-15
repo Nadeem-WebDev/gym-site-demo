@@ -47,12 +47,26 @@ export function resumeSmoothScroll() {
   lenis?.start();
 }
 
+function getScrollOffset(el) {
+  const headerHeight = document.querySelector('header')?.getBoundingClientRect().height;
+  if (!headerHeight) return 0;
+
+  let offset = -headerHeight;
+  if (window.matchMedia('(min-width: 60rem)').matches && el.matches('section')) {
+    const paddingTop = Number.parseFloat(getComputedStyle(el).paddingTop);
+    if (Number.isFinite(paddingTop)) offset += paddingTop - 32;
+  }
+  return offset;
+}
+
 /** Scroll to an element id, through Lenis when it is running. */
-export function scrollToId(id, { offset = 0, immediate = false } = {}) {
+export function scrollToId(id, options = {}) {
   const el = document.getElementById(id);
   if (!el) return false;
+  const { offset = getScrollOffset(el), immediate = false } = options;
 
   if (lenis) {
+    lenis.resize();
     lenis.scrollTo(el, { offset, immediate });
   } else {
     const top = el.getBoundingClientRect().top + window.scrollY + offset;

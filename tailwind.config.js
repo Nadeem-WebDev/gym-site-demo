@@ -52,8 +52,8 @@ export default {
       letterSpacing: { micro: '0.14em', display: '-0.03em' },
       lineHeight: { body: '1.65', display: '0.95' },
       spacing: {
-        section: 'clamp(4.5rem, 9vw, 9.5rem)',
-        'section-sm': 'clamp(3rem, 6vw, 6rem)',
+        section: 'clamp(3.5rem, 5vw, 6.5rem)',
+        'section-sm': 'clamp(2.5rem, 4vw, 4.5rem)',
         gutter: 'clamp(1.25rem, 4vw, 3.5rem)',
         header: 'var(--header-h)',
       },

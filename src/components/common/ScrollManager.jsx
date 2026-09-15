@@ -16,15 +16,30 @@ export default function ScrollManager() {
     }
 
     const id = hash.slice(1);
-    // Two frames: one for the route to render, one for Lenis to measure it.
-    let second = null;
-    const first = requestAnimationFrame(() => {
-      second = requestAnimationFrame(() => scrollToId(id, { immediate: true }));
-    });
+    let cancelled = false;
+    const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve));
+
+    const waitForTarget = async () => {
+      for (let attempt = 0; attempt < 60; attempt += 1) {
+        if (cancelled) return false;
+        if (document.getElementById(id)) return true;
+        await nextFrame();
+      }
+      return false;
+    };
+
+    const scrollWhenReady = async () => {
+      await document.fonts?.ready;
+      if (!(await waitForTarget())) return;
+      await nextFrame();
+      await nextFrame();
+      if (!cancelled) scrollToId(id, { immediate: true });
+    };
+
+    scrollWhenReady();
 
     return () => {
-      cancelAnimationFrame(first);
-      if (second) cancelAnimationFrame(second);
+      cancelled = true;
     };
   }, [pathname, hash]);
 
