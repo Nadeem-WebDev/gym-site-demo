@@ -22,11 +22,11 @@ const LINK =
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const scrolled = useScrolled(30);
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   const navigate = useNavigate();
 
   const onHome = pathname === '/';
-  const active = useActiveSection(SECTION_IDS, { enabled: onHome });
+  const active = useActiveSection(SECTION_IDS, { enabled: onHome, resetKey: `${pathname}${hash}` });
 
   // The header sits over the hero only at the top of the homepage.
   const overlay = onHome && !scrolled;

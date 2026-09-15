@@ -5,11 +5,15 @@ import { useEffect, useState } from 'react';
  * mark it active. Uses IntersectionObserver rather than scroll maths, and
  * picks the entry closest to the top of the viewport when several intersect.
  */
-export function useActiveSection(ids, { enabled = true, rootMargin = '-45% 0px -50% 0px' } = {}) {
+export function useActiveSection(
+  ids,
+  { enabled = true, rootMargin = '-45% 0px -50% 0px', resetKey = '' } = {}
+) {
   const [active, setActive] = useState(null);
   const key = ids.join('|');
 
   useEffect(() => {
+    setActive(null);
     if (!enabled) {
       setActive(null);
       return undefined;
@@ -31,7 +35,10 @@ export function useActiveSection(ids, { enabled = true, rootMargin = '-45% 0px -
           else visible.delete(entry.target.id);
         });
 
-        if (!visible.size) return;
+        if (!visible.size) {
+          setActive(null);
+          return;
+        }
         // Closest to the top wins when two sections straddle the band.
         const [topId] = [...visible.entries()].sort((a, b) => Math.abs(a[1]) - Math.abs(b[1]))[0];
         setActive(topId);
@@ -41,7 +48,7 @@ export function useActiveSection(ids, { enabled = true, rootMargin = '-45% 0px -
 
     sections.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, [key, enabled, rootMargin]);
+  }, [key, enabled, rootMargin, resetKey]);
 
   return active;
 }
