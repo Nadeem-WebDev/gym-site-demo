@@ -5,7 +5,7 @@ import { gym } from '../../data/gym';
 import { NAV_LINKS } from '../../utils/constants';
 import { useScrolled } from '../../hooks/useScrolled';
 import { useActiveSection } from '../../hooks/useActiveSection';
-import { scrollToId } from '../../lib/smoothScroll';
+import { resumeSmoothScroll, scrollToId } from '../../lib/smoothScroll';
 import { cn } from '../../utils/helpers';
 import Button from '../common/Button';
 import MobileMenu from './MobileMenu';
@@ -37,6 +37,7 @@ export default function Header() {
       e.preventDefault();
       setMenuOpen(false);
       if (onHome) {
+        resumeSmoothScroll();
         scrollToId(id);
         // Keep the URL shareable without triggering ScrollManager's jump.
         window.history.replaceState(null, '', `#${id}`);
